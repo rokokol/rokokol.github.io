@@ -1,0 +1,87 @@
+[
+        {
+            "name": "Проект 1",
+            "description": "Описание проекта 1",
+            "link": "https://example.com/project1",
+            "image": "project1.png",
+            "tags": ["Python", "Arduino"]
+        },
+        {
+            "name": "Проект 2",
+            "description": "Описание проекта 2",
+            "link": "https://example.com/project2",
+            "image": "project2.png",
+            "tags": ["Python", "Other"]
+        },
+{
+            "name": "Проект 3",
+            "description": "Описание проекта 1",
+            "link": "https://example.com/project1",
+            "image": "project1.png",
+            "tags": ["Python", "Other"]
+        },
+        {
+            "name": "Проект 4",
+            "description": "Описание проекта 2",
+            "link": "https://example.com/project2",
+            "image": "project2.png",
+            "tags": ["Python", "Other"]
+        },
+{
+            "name": "Проект 5",
+            "description": "Описание проекта 1",
+            "link": "https://example.com/project1",
+            "image": "project1.png",
+            "tags": ["Python", "Other"]
+        },
+        {
+            "name": "Проект 6",
+            "description": "Описание проекта 2",
+            "link": "https://example.com/project2",
+            "image": "project2.png",
+            "tags": ["Python", "Other"]
+        },
+{
+            "name": "Проект 7",
+            "description": "Описание проекта 1",
+            "link": "https://example.com/project1",
+            "image": "project1.png",
+            "tags": ["Python", "Other"]
+        },
+        {
+            "name": "Проект 8",
+            "description": "Описание проекта 2",
+            "link": "https://example.com/project2",
+            "image": "project2.png",
+            "tags": ["Python", "Other"]
+        },
+{
+            "name": "Проект 9",
+            "description": "Описание проекта 1",
+            "link": "https://example.com/project1",
+            "image": "project1.png",
+            "tags": ["Python", "Other"]
+        },
+        {
+            "name": "Проект 10",
+            "description": "Описание проекта 2",
+            "link": "https://example.com/project2",
+            "image": "project2.png",
+            "tags": ["Python", "Other"]
+        },
+{
+            "name": "Проект 11",
+            "description": "Описание проекта 1",
+            "link": "https://example.com/project1",
+            "image": "project1.png",
+            "tags": ["Python", "Other"]
+        },
+        {
+            "name": "Проект 12",
+            "description": "Описание проекта 2",
+            "link": "https://example.com/project2",
+            "image": "project2.png",
+            "tags": ["Python", "Other"]
+        }
+    ]
+
