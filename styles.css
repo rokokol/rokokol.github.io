@@ -8,9 +8,9 @@
 /* Основные стили */
 body, html {
     height: 100%;
-    overflow: hidden;
     font-family: Arial, sans-serif;
     color: white;
+    overflow-x: hidden; /* Предотвращаем горизонтальную прокрутку */
 }
 
 /* Фоновая анимация */
@@ -27,10 +27,8 @@ body, html {
 
 /* Заголовок */
 header {
-    position: absolute;
-    top: 20px;
-    width: 100%;
     text-align: center;
+    margin-top: 20px;
 }
 
 header h1 {
@@ -40,11 +38,9 @@ header h1 {
 
 /* Обрамление для фото и иконок */
 .profile-container {
-    position: relative;
-    width: 400px;
-    height: 260px;
-    margin: 0 auto;
-    top: 13%;
+    max-width: 400px;
+    width: 90%;
+    margin: 20px auto;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     padding: 20px;
@@ -61,7 +57,6 @@ header h1 {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 220px;
 }
 
 .profile-picture {
@@ -70,7 +65,7 @@ header h1 {
     border-radius: 50%;
     z-index: 1;
     object-fit: cover;
-    border: 3px solid white; /* Добавлен контур */
+    border: 3px solid white;
 }
 
 /* Социальные иконки */
@@ -100,11 +95,9 @@ header h1 {
 
 /* Мини-биография */
 .bio-container {
-    position: absolute;
-    top: calc(13% + 265px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 400px;
+    max-width: 400px;
+    width: 90%;
+    margin: 20px auto;
     padding: 20px;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
@@ -115,12 +108,10 @@ header h1 {
 
 /* Лента проектов */
 .carousel {
-    position: absolute;
-    bottom: 5%;
     width: 100%;
-    height: 50%;
     overflow: hidden;
     cursor: grab;
+    margin-top: 20px;
 }
 
 .carousel:active {
@@ -130,14 +121,14 @@ header h1 {
 .carousel-inner {
     display: flex;
     align-items: center;
-    height: 100%;
     transition: transform 0.5s ease;
     will-change: transform;
 }
 
 /* Карточки проектов */
 .project-card {
-    min-width: 350px;
+    width: 80%;
+    max-width: 350px;
     height: 200px;
     background-size: cover;
     background-position: center;
@@ -178,7 +169,7 @@ header h1 {
     color: white;
 }
 
-/* Прозрачность карточек в зависимости от их позиции */
+/* Прозрачность и масштаб карточек */
 .carousel-inner .project-card {
     opacity: 0.4;
     transform: scale(0.8);
@@ -191,15 +182,11 @@ header h1 {
 
 /* Контейнер для тегов */
 .tags-container {
-    position: absolute;
-    bottom: 2%;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    z-index: 2;
+    margin: 20px auto;
 }
 
 /* Стили для тегов */
@@ -232,7 +219,7 @@ header h1 {
     background-color: rgba(255, 0, 0, 0.8);
 }
 
-/* Стили для сообщения об отсутствии проектов */
+/* Сообщение об отсутствии проектов */
 .no-projects-message {
     color: white;
     font-size: 1.5em;
@@ -243,31 +230,47 @@ header h1 {
 /* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
     .profile-container {
-        width: 300px;
-        height: 220px;
+        max-width: 300px;
+        width: 90%;
         padding: 15px;
     }
-
-    .social-icon.left {
-        left: 10px;
-    }
-
-    .social-icon.right {
-        right: 10px;
-    }
-
     .profile-picture {
         width: 150px;
         height: 150px;
     }
-
     .project-card {
-        min-width: 250px;
+        max-width: 250px;
         height: 150px;
     }
-
     .bio-container {
-        width: 300px;
+        max-width: 300px;
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-container {
+        max-width: 280px;
+        width: 90%;
+        padding: 10px;
+    }
+    .profile-picture {
+        width: 120px;
+        height: 120px;
+    }
+    .project-card {
+        max-width: 220px;
+        height: 120px;
+    }
+    .bio-container {
+        max-width: 280px;
+        width: 90%;
+    }
+    .project-name {
+        font-size: 1em;
+    }
+    .project-description {
+        font-size: 0.8em;
     }
 }
 

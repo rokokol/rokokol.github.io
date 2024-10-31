@@ -13,8 +13,8 @@ let velocity = 0;
 let animationFrameId = null;
 
 // Настраиваемые параметры чувствительности
-const swipeThreshold = 30;
-const velocityThreshold = 5;
+const swipeThreshold = 60;
+const velocityThreshold = 10;
 const friction = 0.50;
 const minVelocity = 0.3;
 const wheelThrottleTimeout = 100;
