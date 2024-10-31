@@ -281,14 +281,14 @@ function touchMove(e) {
 function touchEnd(e) {
     if (!isDragging) return;
     isDragging = false;
-    const diff = startX - currentX;
+    const diff = currentX - startX;
     if (Math.abs(diff) > swipeThreshold || Math.abs(velocity) > velocityThreshold) {
         if (diff > 0 || velocity > velocityThreshold) {
-            // Свайп влево (следующий проект)
-            currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
-        } else {
             // Свайп вправо (предыдущий проект)
             currentIndex = Math.max(currentIndex - 1, 0);
+        } else {
+            // Свайп влево (следующий проект)
+            currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
         }
         updateCarousel();
     }
@@ -324,14 +324,14 @@ function mouseMove(e) {
 function mouseUp(e) {
     if (!isDragging) return;
     isDragging = false;
-    const diff = startX - currentX;
+    const diff = currentX - startX;
     if (Math.abs(diff) > swipeThreshold || Math.abs(velocity) > velocityThreshold) {
         if (diff > 0 || velocity > velocityThreshold) {
-            // Свайп влево (следующий проект)
-            currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
-        } else {
             // Свайп вправо (предыдущий проект)
             currentIndex = Math.max(currentIndex - 1, 0);
+        } else {
+            // Свайп влево (следующий проект)
+            currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
         }
         updateCarousel();
     }
@@ -345,14 +345,14 @@ function mouseUp(e) {
 function mouseLeave(e) {
     if (!isDragging) return;
     isDragging = false;
-    const diff = startX - currentX;
+    const diff = currentX - startX;
     if (Math.abs(diff) > swipeThreshold || Math.abs(velocity) > velocityThreshold) {
         if (diff > 0 || velocity > velocityThreshold) {
-            // Свайп влево (следующий проект)
-            currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
-        } else {
             // Свайп вправо (предыдущий проект)
             currentIndex = Math.max(currentIndex - 1, 0);
+        } else {
+            // Свайп влево (следующий проект)
+            currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
         }
         updateCarousel();
     }
