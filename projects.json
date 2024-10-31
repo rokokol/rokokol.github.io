@@ -1,87 +1,52 @@
 [
         {
-            "name": "Проект 1",
-            "description": "Описание проекта 1",
-            "link": "https://example.com/project1",
-            "image": "project1.png",
-            "tags": ["Python", "Arduino"]
+            "name": "Would-be Scinetific Storeroom",
+            "description": "Мой блог в Telegram",
+            "link": "https://t.me/rokokoschannel",
+            "image": "media/would-be-scientific-storeroom.jpg",
+            "tags": ["Best", "Telegram"]
         },
         {
-            "name": "Проект 2",
-            "description": "Описание проекта 2",
-            "link": "https://example.com/project2",
-            "image": "project2.png",
-            "tags": ["Python", "Other"]
-        },
-{
-            "name": "Проект 3",
-            "description": "Описание проекта 1",
-            "link": "https://example.com/project1",
-            "image": "project1.png",
-            "tags": ["Python", "Other"]
+            "name": "На грани смысла",
+            "description": "Канал с забавными находками из интернета",
+            "link": "https://t.me/edge_of_sense",
+            "image": "media/edgesense.gif",
+            "tags": ["Telegram"]
         },
         {
-            "name": "Проект 4",
-            "description": "Описание проекта 2",
-            "link": "https://example.com/project2",
-            "image": "project2.png",
-            "tags": ["Python", "Other"]
-        },
-{
-            "name": "Проект 5",
-            "description": "Описание проекта 1",
-            "link": "https://example.com/project1",
-            "image": "project1.png",
-            "tags": ["Python", "Other"]
+            "name": "Dr. Матхер",
+            "description": "Бот для помощи с математикой",
+            "link": "https://t.me/mathersolver_bot",
+            "image": "media/mather.jpg",
+            "tags": ["Bot", "Telegram"]
         },
         {
-            "name": "Проект 6",
-            "description": "Описание проекта 2",
-            "link": "https://example.com/project2",
-            "image": "project2.png",
-            "tags": ["Python", "Other"]
-        },
-{
-            "name": "Проект 7",
-            "description": "Описание проекта 1",
-            "link": "https://example.com/project1",
-            "image": "project1.png",
-            "tags": ["Python", "Other"]
+            "name": "A Misty Gallery",
+            "description": "Моя фотогаллерея, на которой планируется обучить генеративный ИИ",
+            "link": "https://t.me/amistygallery",
+            "image": "media/misty-gallery.jpg",
+            "tags": ["Telegram", "AI"]
         },
         {
-            "name": "Проект 8",
-            "description": "Описание проекта 2",
-            "link": "https://example.com/project2",
-            "image": "project2.png",
-            "tags": ["Python", "Other"]
-        },
-{
-            "name": "Проект 9",
-            "description": "Описание проекта 1",
-            "link": "https://example.com/project1",
-            "image": "project1.png",
-            "tags": ["Python", "Other"]
+            "name": "Easy Bitmap Maker",
+            "description": "Сайт для создания битмапов до 127x127",
+            "link": "https://ilyushas.online/easy-bitmap.github.io/",
+            "image": "media/easy-bitmap.png",
+            "tags": ["Web"]
         },
         {
-            "name": "Проект 10",
-            "description": "Описание проекта 2",
-            "link": "https://example.com/project2",
-            "image": "project2.png",
-            "tags": ["Python", "Other"]
-        },
-{
-            "name": "Проект 11",
-            "description": "Описание проекта 1",
-            "link": "https://example.com/project1",
-            "image": "project1.png",
-            "tags": ["Python", "Other"]
+            "name": "RingPulse-Stationr",
+            "description": "Классные настольные часы    ",
+            "link": "https://github.com/rokokol/RingPulse-Station",
+            "image": "media/ring-watch.png",
+            "tags": ["Arduino"]
         },
         {
-            "name": "Проект 12",
-            "description": "Описание проекта 2",
-            "link": "https://example.com/project2",
-            "image": "project2.png",
-            "tags": ["Python", "Other"]
+            "name": "Shrimp Run",
+            "description": "Игра про креветку в стиле Google Dino",
+            "link": "https://github.com/rokokol/shrimp_run",
+            "image": "media/shrimp-run.png",
+            "tags": ["Arduino"]
         }
     ]
 
