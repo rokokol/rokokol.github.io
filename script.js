@@ -1,7 +1,9 @@
 const carouselInner = document.querySelector('.carousel-inner');
 let currentIndex = 0;
 let isDragging = false;
+let isClick = false;
 let startX = 0;
+let startY = 0;
 let currentX = 0;
 let projects = [];
 let filteredProjects = [];
@@ -143,7 +145,7 @@ function displayProjects() {
         // Если проектов нет, отображаем сообщение
         const message = document.createElement('div');
         message.className = 'no-projects-message';
-        message.textContent = 'Нет проектов для отображения.';
+        message.textContent = '¯\\_(ツ)_/¯';
         carouselInner.appendChild(message);
         return;
     }
@@ -161,7 +163,8 @@ function displayProjects() {
         const name = document.createElement('div');
         name.className = 'project-name';
         name.textContent = project.name;
-        name.addEventListener('click', () => {
+        name.addEventListener('click', (e) => {
+            e.stopPropagation(); // Предотвращаем срабатывание события клика на карточке
             window.open(project.link, '_blank');
         });
         info.appendChild(name);
@@ -173,19 +176,28 @@ function displayProjects() {
 
         card.appendChild(info);
         carouselInner.appendChild(card);
+
+        // Добавляем обработчик клика на карточку
+        card.addEventListener('click', () => {
+            if (currentIndex !== index) {
+                currentIndex = index;
+                updateCarousel();
+            }
+        });
     });
 }
 
 // Функция для добавления обработчиков событий
 function addEventListeners() {
-    // Обработчики событий для прокрутки колесиком мыши
     const carousel = document.querySelector('.carousel');
-    carousel.addEventListener('wheel', handleWheel, { passive: false });
+
+    // Обработчики событий для прокрутки колесиком мыши
+    carousel.addEventListener('wheel', handleWheel);
 
     // Обработчики для касаний
-    carousel.addEventListener('touchstart', touchStart, { passive: false });
+    carousel.addEventListener('touchstart', touchStart);
     carousel.addEventListener('touchend', touchEnd);
-    carousel.addEventListener('touchmove', touchMove, { passive: false });
+    carousel.addEventListener('touchmove', touchMove);
 
     // Обработчики для мыши (dragging)
     carousel.addEventListener('mousedown', mouseDown);
@@ -208,7 +220,7 @@ function updateCarousel() {
     const offset = -currentIndex * cardWidth + (window.innerWidth / 2 - cardWidth / 2);
     carouselInner.style.transform = `translateX(${offset}px)`;
 
-    // Обновляем прозрачность карточек в зависимости от их расстояния от текущего индекса
+    // Обновляем прозрачность и масштаб карточек в зависимости от их расстояния от текущего индекса
     const cards = document.querySelectorAll('.project-card');
     cards.forEach((card, index) => {
         const distance = Math.abs(index - currentIndex);
@@ -216,49 +228,62 @@ function updateCarousel() {
         if (distance > maxDistance) {
             card.style.opacity = 0;
             card.style.transform = 'scale(0.6)';
+            card.style.pointerEvents = 'none'; // Отключаем взаимодействие с невидимыми карточками
         } else if (distance === 0) {
             card.style.opacity = 1;
             card.style.transform = 'scale(1)';
+            card.style.pointerEvents = 'auto';
         } else if (distance === 1) {
             card.style.opacity = 0.7;
             card.style.transform = 'scale(0.85)';
+            card.style.pointerEvents = 'auto';
         } else {
             card.style.opacity = 0.4;
             card.style.transform = 'scale(0.7)';
+            card.style.pointerEvents = 'auto';
         }
     });
 }
 
 // Функция для обработки прокрутки колесиком мыши
 function handleWheel(e) {
-    e.preventDefault();
+    const delta = e.deltaY;
+
+    // Игнорируем малые прокрутки
+    if (Math.abs(delta) < 10) return;
 
     if (isThrottled) return;
 
-    const delta = e.deltaY;
-
-    // Игнорировать малые прокрутки
-    if (Math.abs(delta) < 10) return;
-
     if (delta > 0) {
-        currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
+        if (currentIndex < filteredProjects.length - 1) {
+            currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
+            e.preventDefault(); // Предотвращаем стандартное поведение только если реально прокручиваем карусель
+            updateCarousel();
+            isThrottled = true;
+            setTimeout(() => {
+                isThrottled = false;
+            }, wheelThrottleTimeout);
+        }
     } else {
-        currentIndex = Math.max(currentIndex - 1, 0);
+        if (currentIndex > 0) {
+            currentIndex = Math.max(currentIndex - 1, 0);
+            e.preventDefault(); // Предотвращаем стандартное поведение только если реально прокручиваем карусель
+            updateCarousel();
+            isThrottled = true;
+            setTimeout(() => {
+                isThrottled = false;
+            }, wheelThrottleTimeout);
+        }
     }
-
-    updateCarousel();
-
-    // Устанавливаем флаг блокировки и сбрасываем его через wheelThrottleTimeout
-    isThrottled = true;
-    setTimeout(() => {
-        isThrottled = false;
-    }, wheelThrottleTimeout);
 }
 
 // Функции для обработки касаний
 function touchStart(e) {
+    if (e.touches.length > 1) return; // Игнорируем многофакторные касания
     isDragging = true;
+    isClick = true;
     startX = getPositionX(e);
+    startY = e.touches[0].clientY;
     currentX = startX;
     velocity = 0;
 
@@ -271,17 +296,32 @@ function touchStart(e) {
 
 function touchMove(e) {
     if (!isDragging) return;
-    e.preventDefault();
+    if (e.touches.length > 1) return; // Игнорируем многофакторные касания
+
     const newX = getPositionX(e);
-    const delta = newX - currentX;
-    velocity = delta; // Сохраняем последнюю скорость
-    currentX = newX;
+    const newY = e.touches[0].clientY;
+    const deltaX = newX - startX;
+    const deltaY = newY - startY;
+
+    // Определяем, является ли движение горизонтальным
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        e.preventDefault(); // Предотвращаем стандартное поведение только при горизонтальном свайпе
+        isClick = false;
+        velocity = deltaX;
+        currentX = newX;
+    }
 }
 
 function touchEnd(e) {
     if (!isDragging) return;
     isDragging = false;
     const diff = currentX - startX;
+
+    if (isClick) {
+        // Это был тап, ничего не делаем здесь
+        return;
+    }
+
     if (Math.abs(diff) > swipeThreshold || Math.abs(velocity) > velocityThreshold) {
         if (diff > 0 || velocity > velocityThreshold) {
             // Свайп вправо (предыдущий проект)
@@ -301,8 +341,13 @@ function touchEnd(e) {
 
 // Функции для обработки мыши (dragging)
 function mouseDown(e) {
+    // Игнорируем, если нажата правая кнопка мыши
+    if (e.button !== 0) return;
+
     isDragging = true;
+    isClick = true; // Предполагаем, что это клик
     startX = getPositionX(e);
+    startY = e.clientY;
     currentX = startX;
     velocity = 0;
 
@@ -315,16 +360,31 @@ function mouseDown(e) {
 
 function mouseMove(e) {
     if (!isDragging) return;
+
     const newX = getPositionX(e);
-    const delta = newX - currentX;
-    velocity = delta; // Сохраняем последнюю скорость
-    currentX = newX;
+    const newY = e.clientY;
+    const deltaX = newX - startX;
+    const deltaY = newY - startY;
+
+    // Определяем, является ли движение горизонтальным
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        e.preventDefault(); // Предотвращаем стандартное поведение только при горизонтальном движении
+        isClick = false;
+        velocity = deltaX;
+        currentX = newX;
+    }
 }
 
 function mouseUp(e) {
     if (!isDragging) return;
     isDragging = false;
     const diff = currentX - startX;
+
+    if (isClick) {
+        // Это был клик, ничего не делаем здесь
+        return;
+    }
+
     if (Math.abs(diff) > swipeThreshold || Math.abs(velocity) > velocityThreshold) {
         if (diff > 0 || velocity > velocityThreshold) {
             // Свайп вправо (предыдущий проект)
@@ -346,6 +406,12 @@ function mouseLeave(e) {
     if (!isDragging) return;
     isDragging = false;
     const diff = currentX - startX;
+
+    if (isClick) {
+        // Это был клик, ничего не делаем здесь
+        return;
+    }
+
     if (Math.abs(diff) > swipeThreshold || Math.abs(velocity) > velocityThreshold) {
         if (diff > 0 || velocity > velocityThreshold) {
             // Свайп вправо (предыдущий проект)
@@ -390,5 +456,83 @@ function animateInertia() {
 
     // Продолжаем анимацию
     animationFrameId = requestAnimationFrame(animateInertia);
+}
+
+// Функция обновления состояния карусели при изменении индекса
+function updateCarousel() {
+    if (filteredProjects.length === 0) {
+        carouselInner.style.transform = `translateX(0px)`;
+        return;
+    }
+
+    const card = document.querySelector('.project-card');
+    if (!card) return; // Если нет карточек, выходим
+
+    const cardWidth = card.offsetWidth + 20; // ширина карточки + отступы
+    const offset = -currentIndex * cardWidth + (window.innerWidth / 2 - cardWidth / 2);
+    carouselInner.style.transform = `translateX(${offset}px)`;
+
+    // Обновляем прозрачность и масштаб карточек в зависимости от их расстояния от текущего индекса
+    const cards = document.querySelectorAll('.project-card');
+    cards.forEach((card, index) => {
+        const distance = Math.abs(index - currentIndex);
+        const maxDistance = 2; // Максимальное количество карточек по обе стороны от текущей, которые будут видимы
+        if (distance > maxDistance) {
+            card.style.opacity = 0;
+            card.style.transform = 'scale(0.6)';
+            card.style.pointerEvents = 'none'; // Отключаем взаимодействие с невидимыми карточками
+        } else if (distance === 0) {
+            card.style.opacity = 1;
+            card.style.transform = 'scale(1)';
+            card.style.pointerEvents = 'auto';
+        } else if (distance === 1) {
+            card.style.opacity = 0.7;
+            card.style.transform = 'scale(0.85)';
+            card.style.pointerEvents = 'auto';
+        } else {
+            card.style.opacity = 0.4;
+            card.style.transform = 'scale(0.7)';
+            card.style.pointerEvents = 'auto';
+        }
+    });
+}
+
+// Функция для обновления карусели при изменении индекса
+function updateCarousel() {
+    if (filteredProjects.length === 0) {
+        carouselInner.style.transform = `translateX(0px)`;
+        return;
+    }
+
+    const card = document.querySelector('.project-card');
+    if (!card) return; // Если нет карточек, выходим
+
+    const cardWidth = card.offsetWidth + 20; // ширина карточки + отступы
+    const offset = -currentIndex * cardWidth + (window.innerWidth / 2 - cardWidth / 2);
+    carouselInner.style.transform = `translateX(${offset}px)`;
+
+    // Обновляем прозрачность и масштаб карточек в зависимости от их расстояния от текущего индекса
+    const cards = document.querySelectorAll('.project-card');
+    cards.forEach((card, index) => {
+        const distance = Math.abs(index - currentIndex);
+        const maxDistance = 2; // Максимальное количество карточек по обе стороны от текущей, которые будут видимы
+        if (distance > maxDistance) {
+            card.style.opacity = 0;
+            card.style.transform = 'scale(0.6)';
+            card.style.pointerEvents = 'none'; // Отключаем взаимодействие с невидимыми карточками
+        } else if (distance === 0) {
+            card.style.opacity = 1;
+            card.style.transform = 'scale(1)';
+            card.style.pointerEvents = 'auto';
+        } else if (distance === 1) {
+            card.style.opacity = 0.7;
+            card.style.transform = 'scale(0.85)';
+            card.style.pointerEvents = 'auto';
+        } else {
+            card.style.opacity = 0.4;
+            card.style.transform = 'scale(0.7)';
+            card.style.pointerEvents = 'auto';
+        }
+    });
 }
 
