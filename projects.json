@@ -32,7 +32,7 @@
             "description": "Сайт для создания битмапов до 127x127",
             "link": "https://ilyushas.online/easy-bitmap.github.io/",
             "image": "media/easy-bitmap.png",
-            "tags": ["Web"]
+            "tags": ["Other"]
         },
         {
             "name": "RingPulse-Stationr",
@@ -47,6 +47,13 @@
             "link": "https://github.com/rokokol/shrimp_run",
             "image": "media/shrimp-run.png",
             "tags": ["Arduino"]
+        },
+        {
+            "name": "Best Way Searcher",
+            "description": "Мой первый командный проект",
+            "link": "hhttps://github.com/Xtaiewzer/Best-Way-Searcher",
+            "image": "media/bws.jpg",
+            "tags": ["Other"]
         }
     ]
 
