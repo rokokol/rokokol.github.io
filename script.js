@@ -13,8 +13,8 @@ let velocity = 0;
 let animationFrameId = null;
 
 // Настраиваемые параметры чувствительности
-const swipeThreshold = 60;
-const velocityThreshold = 10;
+const swipeThreshold = 30;
+const velocityThreshold = 5;
 const friction = 0.50;
 const minVelocity = 0.3;
 const wheelThrottleTimeout = 100;
@@ -324,19 +324,19 @@ function touchEnd(e) {
 
     if (Math.abs(diff) > swipeThreshold || Math.abs(velocity) > velocityThreshold) {
         if (diff > 0 || velocity > velocityThreshold) {
-            // Свайп вправо (предыдущий проект)
+            // Свайп вправо (карусель движется вправо)
             currentIndex = Math.max(currentIndex - 1, 0);
         } else {
-            // Свайп влево (следующий проект)
+            // Свайп влево (карусель движется влево)
             currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
         }
         updateCarousel();
     }
 
-    // Запускаем инерционную анимацию, если есть скорость
-    if (Math.abs(velocity) > velocityThreshold) {
-        animateInertia();
-    }
+    // Опционально: если инерция вызывает проблемы, можно ее отключить
+    // if (Math.abs(velocity) > velocityThreshold) {
+    //     animateInertia();
+    // }
 }
 
 // Функции для обработки мыши (dragging)
@@ -345,7 +345,7 @@ function mouseDown(e) {
     if (e.button !== 0) return;
 
     isDragging = true;
-    isClick = true; // Предполагаем, что это клик
+    isClick = true;
     startX = getPositionX(e);
     startY = e.clientY;
     currentX = startX;
@@ -387,19 +387,19 @@ function mouseUp(e) {
 
     if (Math.abs(diff) > swipeThreshold || Math.abs(velocity) > velocityThreshold) {
         if (diff > 0 || velocity > velocityThreshold) {
-            // Свайп вправо (предыдущий проект)
+            // Свайп вправо (карусель движется вправо)
             currentIndex = Math.max(currentIndex - 1, 0);
         } else {
-            // Свайп влево (следующий проект)
+            // Свайп влево (карусель движется влево)
             currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
         }
         updateCarousel();
     }
 
-    // Запускаем инерционную анимацию, если есть скорость
-    if (Math.abs(velocity) > velocityThreshold) {
-        animateInertia();
-    }
+    // Опционально: отключаем инерцию
+    // if (Math.abs(velocity) > velocityThreshold) {
+    //     animateInertia();
+    // }
 }
 
 function mouseLeave(e) {
@@ -414,19 +414,19 @@ function mouseLeave(e) {
 
     if (Math.abs(diff) > swipeThreshold || Math.abs(velocity) > velocityThreshold) {
         if (diff > 0 || velocity > velocityThreshold) {
-            // Свайп вправо (предыдущий проект)
+            // Свайп вправо (карусель движется вправо)
             currentIndex = Math.max(currentIndex - 1, 0);
         } else {
-            // Свайп влево (следующий проект)
+            // Свайп влево (карусель движется влево)
             currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
         }
         updateCarousel();
     }
 
-    // Запускаем инерционную анимацию, если есть скорость
-    if (Math.abs(velocity) > velocityThreshold) {
-        animateInertia();
-    }
+    // Опционально: отключаем инерцию
+    // if (Math.abs(velocity) > velocityThreshold) {
+    //     animateInertia();
+    // }
 }
 
 // Вспомогательная функция для получения позиции X
@@ -434,7 +434,7 @@ function getPositionX(e) {
     return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
 }
 
-// Функция для инерционной анимации
+// Функция для инерционной анимации (если нужно)
 function animateInertia() {
     velocity *= friction;
 
@@ -445,94 +445,14 @@ function animateInertia() {
         return;
     }
 
-    // Обновляем текущий индекс на основе скорости
     if (velocity > velocityThreshold) {
-        currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
-    } else if (velocity < -velocityThreshold) {
         currentIndex = Math.max(currentIndex - 1, 0);
+    } else if (velocity < -velocityThreshold) {
+        currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
     }
 
     updateCarousel();
 
-    // Продолжаем анимацию
     animationFrameId = requestAnimationFrame(animateInertia);
-}
-
-// Функция обновления состояния карусели при изменении индекса
-function updateCarousel() {
-    if (filteredProjects.length === 0) {
-        carouselInner.style.transform = `translateX(0px)`;
-        return;
-    }
-
-    const card = document.querySelector('.project-card');
-    if (!card) return; // Если нет карточек, выходим
-
-    const cardWidth = card.offsetWidth + 20; // ширина карточки + отступы
-    const offset = -currentIndex * cardWidth + (window.innerWidth / 2 - cardWidth / 2);
-    carouselInner.style.transform = `translateX(${offset}px)`;
-
-    // Обновляем прозрачность и масштаб карточек в зависимости от их расстояния от текущего индекса
-    const cards = document.querySelectorAll('.project-card');
-    cards.forEach((card, index) => {
-        const distance = Math.abs(index - currentIndex);
-        const maxDistance = 2; // Максимальное количество карточек по обе стороны от текущей, которые будут видимы
-        if (distance > maxDistance) {
-            card.style.opacity = 0;
-            card.style.transform = 'scale(0.6)';
-            card.style.pointerEvents = 'none'; // Отключаем взаимодействие с невидимыми карточками
-        } else if (distance === 0) {
-            card.style.opacity = 1;
-            card.style.transform = 'scale(1)';
-            card.style.pointerEvents = 'auto';
-        } else if (distance === 1) {
-            card.style.opacity = 0.7;
-            card.style.transform = 'scale(0.85)';
-            card.style.pointerEvents = 'auto';
-        } else {
-            card.style.opacity = 0.4;
-            card.style.transform = 'scale(0.7)';
-            card.style.pointerEvents = 'auto';
-        }
-    });
-}
-
-// Функция для обновления карусели при изменении индекса
-function updateCarousel() {
-    if (filteredProjects.length === 0) {
-        carouselInner.style.transform = `translateX(0px)`;
-        return;
-    }
-
-    const card = document.querySelector('.project-card');
-    if (!card) return; // Если нет карточек, выходим
-
-    const cardWidth = card.offsetWidth + 20; // ширина карточки + отступы
-    const offset = -currentIndex * cardWidth + (window.innerWidth / 2 - cardWidth / 2);
-    carouselInner.style.transform = `translateX(${offset}px)`;
-
-    // Обновляем прозрачность и масштаб карточек в зависимости от их расстояния от текущего индекса
-    const cards = document.querySelectorAll('.project-card');
-    cards.forEach((card, index) => {
-        const distance = Math.abs(index - currentIndex);
-        const maxDistance = 2; // Максимальное количество карточек по обе стороны от текущей, которые будут видимы
-        if (distance > maxDistance) {
-            card.style.opacity = 0;
-            card.style.transform = 'scale(0.6)';
-            card.style.pointerEvents = 'none'; // Отключаем взаимодействие с невидимыми карточками
-        } else if (distance === 0) {
-            card.style.opacity = 1;
-            card.style.transform = 'scale(1)';
-            card.style.pointerEvents = 'auto';
-        } else if (distance === 1) {
-            card.style.opacity = 0.7;
-            card.style.transform = 'scale(0.85)';
-            card.style.pointerEvents = 'auto';
-        } else {
-            card.style.opacity = 0.4;
-            card.style.transform = 'scale(0.7)';
-            card.style.pointerEvents = 'auto';
-        }
-    });
 }
 
