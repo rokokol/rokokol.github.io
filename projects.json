@@ -29,8 +29,8 @@
         },
         {
             "name": "Easy Bitmap Maker",
-            "description": "Сайт для создания битмапов до 127x127",
-            "link": "https://ilyushas.online/easy-bitmap.github.io/",
+            "description": "Сайт для создания квадратных C++ битмапов",
+            "link": "http://easy-bitmap.online/",
             "image": "media/easy-bitmap.png",
             "tags": ["Other"]
         },
