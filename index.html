@@ -47,9 +47,21 @@
         </div>
     </div>
 
-    <!-- Контейнер для тегов -->
+    <!-- Контейнер для тегов и кнопки документов -->
     <div class="tags-container">
-        <!-- Кнопки тегов будут загружены сюда с помощью JavaScript -->
+        <!-- Кнопка для документов слева -->
+        <div class="doc-button" id="docButton" title="Смотреть документы">
+            <img src="icons/document.ico" alt="Документы">
+        </div>
+        <!-- Теги будут добавлены скриптом -->
+    </div>
+
+    <!-- Всплывающее окно с документами -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <div class="tabs" id="tabs"></div>
+            <div class="tab-content" id="tabContent"></div>
+        </div>
     </div>
 
     <!-- Подключение JavaScript -->
