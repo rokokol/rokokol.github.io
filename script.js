@@ -224,7 +224,13 @@ function updateCarousel() {
 }
 
 function handleWheel(e) {
-    const delta = e.deltaY;
+    let delta;
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        delta = e.deltaX;
+    } else {
+        delta = e.deltaY;
+    }
+
     if (Math.abs(delta) < 10) return;
     if (isThrottled) return;
 
