@@ -184,10 +184,11 @@ header h1 {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin: 20px auto;
+    margin: 20px auto; /* чтобы контейнер сам центрировался по горизонтали */
     align-items: center;
-    justify-content: flex-start; /* Док-кнопка слева, теги рядом */
+    justify-content: center; /* меняем выравнивание по главной оси */
     max-width: 600px;
+    text-align: center; /* можно оставить, чтобы тексты кнопок были по центру */
 }
 
 /* Кнопка для документов */
@@ -203,9 +204,11 @@ header h1 {
     align-items: center;
     justify-content: center;
 }
+
 .doc-button:hover {
     background: rgba(255,255,255,0.2);
 }
+
 .doc-button img {
     width: 24px;
     height: 24px;
