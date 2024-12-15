@@ -1,3 +1,7 @@
+// -----------------------------------------
+// Логика карусели и тегов
+// -----------------------------------------
+
 const carouselInner = document.querySelector('.carousel-inner');
 let currentIndex = 0;
 let isDragging = false;
@@ -8,18 +12,16 @@ let currentX = 0;
 let projects = [];
 let filteredProjects = [];
 let tags = [];
-let selectedTags = []; // Массив выбранных тегов
+let selectedTags = [];
 let velocity = 0;
 let animationFrameId = null;
 
-// Настраиваемые параметры чувствительности
 const swipeThreshold = 30;
 const velocityThreshold = 5;
 const friction = 0.50;
 const minVelocity = 0.3;
 const wheelThrottleTimeout = 100;
 
-// Флаг для throttling колесика мыши
 let isThrottled = false;
 
 // Загрузка данных о проектах
@@ -28,26 +30,15 @@ fetch('projects.json')
     .then(data => {
         projects = data;
         filteredProjects = [...projects];
-
-        // Генерируем список уникальных тегов из проектов
         tags = getUniqueTagsFromProjects(projects);
-
-        // Отображаем теги на странице
         displayTags();
-
-        // Отображаем проекты
         displayProjects();
-
-        // Устанавливаем текущий индекс на средний проект
         currentIndex = Math.floor(filteredProjects.length / 2);
         updateCarousel();
-
-        // Добавляем обработчики событий
         addEventListeners();
     })
     .catch(error => console.error('Ошибка при загрузке проектов:', error));
 
-// Функция получения уникальных тегов из проектов
 function getUniqueTagsFromProjects(projects) {
     const tagSet = new Set();
     projects.forEach(project => {
@@ -58,28 +49,28 @@ function getUniqueTagsFromProjects(projects) {
     return Array.from(tagSet);
 }
 
-// Функция отображения тегов
 function displayTags() {
     const tagsContainer = document.querySelector('.tags-container');
-    tagsContainer.innerHTML = ''; // Очищаем контейнер
+    // На данный момент docButton уже в HTML до тегов
+    // Просто добавим теги после docButton
+
+    // Удаляем все, кроме docButton, если есть
+    const existingButtons = tagsContainer.querySelectorAll('.tag-button, .reset-button');
+    existingButtons.forEach(btn => btn.remove());
 
     tags.forEach(tag => {
         const button = document.createElement('button');
         button.className = 'tag-button';
         button.textContent = tag;
-
-        // Если тег выбран, добавляем класс 'active'
         if (selectedTags.includes(tag)) {
             button.classList.add('active');
         }
-
         button.addEventListener('click', () => {
             toggleTagSelection(tag);
         });
         tagsContainer.appendChild(button);
     });
 
-    // Добавляем кнопку "Сбросить"
     const resetButton = document.createElement('button');
     resetButton.className = 'tag-button reset-button';
     resetButton.textContent = 'Сбросить';
@@ -88,9 +79,10 @@ function displayTags() {
         filterProjects();
     });
     tagsContainer.appendChild(resetButton);
+
+    updateActiveTagButtons();
 }
 
-// Функция переключения выбора тега
 function toggleTagSelection(tag) {
     if (selectedTags.includes(tag)) {
         selectedTags = selectedTags.filter(t => t !== tag);
@@ -100,7 +92,6 @@ function toggleTagSelection(tag) {
     filterProjects();
 }
 
-// Функция фильтрации проектов по выбранным тегам
 function filterProjects() {
     if (selectedTags.length === 0) {
         filteredProjects = [...projects];
@@ -117,7 +108,6 @@ function filterProjects() {
     updateActiveTagButtons();
 }
 
-// Функция обновления активного состояния кнопок тегов
 function updateActiveTagButtons() {
     const tagButtons = document.querySelectorAll('.tag-button');
     tagButtons.forEach(button => {
@@ -128,21 +118,18 @@ function updateActiveTagButtons() {
             button.classList.remove('active');
         }
 
-        // Обрабатываем кнопку "Сбросить"
         if (button.classList.contains('reset-button') && selectedTags.length === 0) {
             button.classList.add('disabled');
-        } else {
+        } else if (button.classList.contains('reset-button')) {
             button.classList.remove('disabled');
         }
     });
 }
 
-// Функция отображения проектов
 function displayProjects() {
-    carouselInner.innerHTML = ''; // Очищаем карусель
+    carouselInner.innerHTML = '';
 
     if (filteredProjects.length === 0) {
-        // Если проектов нет, отображаем сообщение
         const message = document.createElement('div');
         message.className = 'no-projects-message';
         message.textContent = '¯\\_(ツ)_/¯';
@@ -153,8 +140,6 @@ function displayProjects() {
     filteredProjects.forEach((project, index) => {
         const card = document.createElement('div');
         card.className = 'project-card';
-
-        // Устанавливаем фоновое изображение карточки
         card.style.backgroundImage = `url(${project.image})`;
 
         const info = document.createElement('div');
@@ -164,7 +149,7 @@ function displayProjects() {
         name.className = 'project-name';
         name.textContent = project.name;
         name.addEventListener('click', (e) => {
-            e.stopPropagation(); // Предотвращаем срабатывание события клика на карточке
+            e.stopPropagation();
             window.open(project.link, '_blank');
         });
         info.appendChild(name);
@@ -177,7 +162,6 @@ function displayProjects() {
         card.appendChild(info);
         carouselInner.appendChild(card);
 
-        // Добавляем обработчик клика на карточку
         card.addEventListener('click', () => {
             if (currentIndex !== index) {
                 currentIndex = index;
@@ -187,26 +171,21 @@ function displayProjects() {
     });
 }
 
-// Функция для добавления обработчиков событий
 function addEventListeners() {
     const carousel = document.querySelector('.carousel');
 
-    // Обработчики событий для прокрутки колесиком мыши
     carousel.addEventListener('wheel', handleWheel);
 
-    // Обработчики для касаний
     carousel.addEventListener('touchstart', touchStart);
     carousel.addEventListener('touchend', touchEnd);
     carousel.addEventListener('touchmove', touchMove);
 
-    // Обработчики для мыши (dragging)
     carousel.addEventListener('mousedown', mouseDown);
     carousel.addEventListener('mouseup', mouseUp);
     carousel.addEventListener('mouseleave', mouseLeave);
     carousel.addEventListener('mousemove', mouseMove);
 }
 
-// Функция для обновления карусели
 function updateCarousel() {
     if (filteredProjects.length === 0) {
         carouselInner.style.transform = `translateX(0px)`;
@@ -214,21 +193,20 @@ function updateCarousel() {
     }
 
     const card = document.querySelector('.project-card');
-    if (!card) return; // Если нет карточек, выходим
+    if (!card) return;
 
-    const cardWidth = card.offsetWidth + 20; // ширина карточки + отступы
+    const cardWidth = card.offsetWidth + 20;
     const offset = -currentIndex * cardWidth + (window.innerWidth / 2 - cardWidth / 2);
     carouselInner.style.transform = `translateX(${offset}px)`;
 
-    // Обновляем прозрачность и масштаб карточек в зависимости от их расстояния от текущего индекса
     const cards = document.querySelectorAll('.project-card');
     cards.forEach((card, index) => {
         const distance = Math.abs(index - currentIndex);
-        const maxDistance = 2; // Максимальное количество карточек по обе стороны от текущей, которые будут видимы
+        const maxDistance = 2;
         if (distance > maxDistance) {
             card.style.opacity = 0;
             card.style.transform = 'scale(0.6)';
-            card.style.pointerEvents = 'none'; // Отключаем взаимодействие с невидимыми карточками
+            card.style.pointerEvents = 'none';
         } else if (distance === 0) {
             card.style.opacity = 1;
             card.style.transform = 'scale(1)';
@@ -245,49 +223,39 @@ function updateCarousel() {
     });
 }
 
-// Функция для обработки прокрутки колесиком мыши
 function handleWheel(e) {
     const delta = e.deltaY;
-
-    // Игнорируем малые прокрутки
     if (Math.abs(delta) < 10) return;
-
     if (isThrottled) return;
 
     if (delta > 0) {
         if (currentIndex < filteredProjects.length - 1) {
             currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
-            e.preventDefault(); // Предотвращаем стандартное поведение только если реально прокручиваем карусель
+            e.preventDefault();
             updateCarousel();
             isThrottled = true;
-            setTimeout(() => {
-                isThrottled = false;
-            }, wheelThrottleTimeout);
+            setTimeout(() => { isThrottled = false; }, wheelThrottleTimeout);
         }
     } else {
         if (currentIndex > 0) {
             currentIndex = Math.max(currentIndex - 1, 0);
-            e.preventDefault(); // Предотвращаем стандартное поведение только если реально прокручиваем карусель
+            e.preventDefault();
             updateCarousel();
             isThrottled = true;
-            setTimeout(() => {
-                isThrottled = false;
-            }, wheelThrottleTimeout);
+            setTimeout(() => { isThrottled = false; }, wheelThrottleTimeout);
         }
     }
 }
 
-// Функции для обработки касаний
+// Касания
 function touchStart(e) {
-    if (e.touches.length > 1) return; // Игнорируем многофакторные касания
+    if (e.touches.length > 1) return;
     isDragging = true;
     isClick = true;
     startX = getPositionX(e);
     startY = e.touches[0].clientY;
     currentX = startX;
-    velocity = 0;
 
-    // Останавливаем текущую анимацию, если она есть
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
@@ -295,17 +263,14 @@ function touchStart(e) {
 }
 
 function touchMove(e) {
-    if (!isDragging) return;
-    if (e.touches.length > 1) return; // Игнорируем многофакторные касания
-
+    if (!isDragging || e.touches.length > 1) return;
     const newX = getPositionX(e);
     const newY = e.touches[0].clientY;
     const deltaX = newX - startX;
     const deltaY = newY - startY;
 
-    // Определяем, является ли движение горизонтальным
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        e.preventDefault(); // Предотвращаем стандартное поведение только при горизонтальном свайпе
+        e.preventDefault();
         isClick = false;
         velocity = deltaX;
         currentX = newX;
@@ -317,41 +282,27 @@ function touchEnd(e) {
     isDragging = false;
     const diff = currentX - startX;
 
-    if (isClick) {
-        // Это был тап, ничего не делаем здесь
-        return;
-    }
+    if (isClick) return;
 
     if (Math.abs(diff) > swipeThreshold || Math.abs(velocity) > velocityThreshold) {
         if (diff > 0 || velocity > velocityThreshold) {
-            // Свайп вправо (карусель движется вправо)
             currentIndex = Math.max(currentIndex - 1, 0);
         } else {
-            // Свайп влево (карусель движется влево)
             currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
         }
         updateCarousel();
     }
-
-    // Опционально: если инерция вызывает проблемы, можно ее отключить
-    // if (Math.abs(velocity) > velocityThreshold) {
-    //     animateInertia();
-    // }
 }
 
-// Функции для обработки мыши (dragging)
+// Мышь
 function mouseDown(e) {
-    // Игнорируем, если нажата правая кнопка мыши
     if (e.button !== 0) return;
-
     isDragging = true;
     isClick = true;
     startX = getPositionX(e);
     startY = e.clientY;
     currentX = startX;
-    velocity = 0;
 
-    // Останавливаем текущую анимацию, если она есть
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
@@ -360,15 +311,13 @@ function mouseDown(e) {
 
 function mouseMove(e) {
     if (!isDragging) return;
-
     const newX = getPositionX(e);
     const newY = e.clientY;
     const deltaX = newX - startX;
     const deltaY = newY - startY;
 
-    // Определяем, является ли движение горизонтальным
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        e.preventDefault(); // Предотвращаем стандартное поведение только при горизонтальном движении
+        e.preventDefault();
         isClick = false;
         velocity = deltaX;
         currentX = newX;
@@ -380,26 +329,16 @@ function mouseUp(e) {
     isDragging = false;
     const diff = currentX - startX;
 
-    if (isClick) {
-        // Это был клик, ничего не делаем здесь
-        return;
-    }
+    if (isClick) return;
 
     if (Math.abs(diff) > swipeThreshold || Math.abs(velocity) > velocityThreshold) {
         if (diff > 0 || velocity > velocityThreshold) {
-            // Свайп вправо (карусель движется вправо)
             currentIndex = Math.max(currentIndex - 1, 0);
         } else {
-            // Свайп влево (карусель движется влево)
             currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
         }
         updateCarousel();
     }
-
-    // Опционально: отключаем инерцию
-    // if (Math.abs(velocity) > velocityThreshold) {
-    //     animateInertia();
-    // }
 }
 
 function mouseLeave(e) {
@@ -407,52 +346,118 @@ function mouseLeave(e) {
     isDragging = false;
     const diff = currentX - startX;
 
-    if (isClick) {
-        // Это был клик, ничего не делаем здесь
-        return;
-    }
+    if (isClick) return;
 
     if (Math.abs(diff) > swipeThreshold || Math.abs(velocity) > velocityThreshold) {
         if (diff > 0 || velocity > velocityThreshold) {
-            // Свайп вправо (карусель движется вправо)
             currentIndex = Math.max(currentIndex - 1, 0);
         } else {
-            // Свайп влево (карусель движется влево)
             currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
         }
         updateCarousel();
     }
-
-    // Опционально: отключаем инерцию
-    // if (Math.abs(velocity) > velocityThreshold) {
-    //     animateInertia();
-    // }
 }
 
-// Вспомогательная функция для получения позиции X
 function getPositionX(e) {
     return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
 }
 
-// Функция для инерционной анимации (если нужно)
-function animateInertia() {
-    velocity *= friction;
 
-    if (Math.abs(velocity) < minVelocity) {
-        // Скорость слишком мала, прекращаем анимацию
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = null;
-        return;
+// -----------------------------------------
+// Логика всплывающего окна с документами
+// -----------------------------------------
+
+const docButton = document.getElementById('docButton');
+const popup = document.getElementById('popup');
+const tabsContainer = document.getElementById('tabs');
+const tabContent = document.getElementById('tabContent');
+
+docButton.addEventListener('click', () => {
+    popup.style.display = 'flex';
+    loadPapers();
+});
+
+window.addEventListener('click', (e) => {
+    if (e.target === popup) {
+        closePopup();
     }
+});
 
-    if (velocity > velocityThreshold) {
-        currentIndex = Math.max(currentIndex - 1, 0);
-    } else if (velocity < -velocityThreshold) {
-        currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closePopup();
     }
+});
 
-    updateCarousel();
+function closePopup() {
+    popup.style.display = 'none';
+    tabsContainer.innerHTML = '';
+    tabContent.innerHTML = '';
+}
 
-    animationFrameId = requestAnimationFrame(animateInertia);
+// Загрузка и отображение документов из папки papers
+function loadPapers() {
+    tabsContainer.innerHTML = '';
+    tabContent.innerHTML = '';
+
+    // Получаем список файлов
+    fetch('papers/files.json')
+        .then(res => res.json())
+        .then(allFiles => {
+            // Фильтруем только .md файлы
+            const mdFiles = allFiles.filter(fileName => fileName.toLowerCase().endsWith('.md'));
+            const promises = mdFiles.map(fileName => {
+                const url = `papers/${fileName}`;
+                return fetch(url).then(res => res.text()).then(text => ({fileName, text}));
+            });
+
+            Promise.all(promises).then(fileDataArray => {
+                const papersData = fileDataArray.map(fd => {
+                    const lines = fd.text.split('\n');
+                    const titleLine = lines[0].replace(/^#\s*/, '').trim();
+                    return { title: titleLine, content: fd.text };
+                });
+
+                papersData.forEach((paper, index) => {
+                    const tabButton = document.createElement('button');
+                    tabButton.className = 'tab-button';
+                    tabButton.textContent = paper.title;
+
+                    tabButton.addEventListener('click', () => {
+                        selectTab(index, papersData);
+                    });
+
+                    tabsContainer.appendChild(tabButton);
+                });
+
+                // Показать первую вкладку по умолчанию
+                if (papersData.length > 0) {
+                    selectTab(0, papersData);
+                }
+            }).catch(error => console.error('Ошибка при загрузке документов:', error));
+        })
+        .catch(error => console.error('Ошибка при загрузке списка файлов:', error));
+}
+
+function selectTab(index, papersData) {
+    const buttons = tabsContainer.querySelectorAll('.tab-button');
+    buttons.forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+    });
+
+    const content = papersData[index].content;
+    tabContent.innerHTML = renderMarkdown(content);
+}
+
+function renderMarkdown(md) {
+    let html = md
+        .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+        .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+        .replace(/\*\*(.*?)\*\*/gim, '<b>$1</b>')
+        .replace(/\*(.*?)\*/gim, '<i>$1</i>')
+        .replace(/\n/gim, '<br>');
+
+    return html.trim();
 }
 

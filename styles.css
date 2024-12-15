@@ -10,7 +10,7 @@ body, html {
     height: 100%;
     font-family: Arial, sans-serif;
     color: white;
-    overflow-x: hidden; /* Предотвращаем горизонтальную прокрутку */
+    overflow-x: hidden;
 }
 
 /* Фоновая анимация */
@@ -29,6 +29,7 @@ body, html {
 header {
     text-align: center;
     margin-top: 20px;
+    position: relative;
 }
 
 header h1 {
@@ -50,7 +51,6 @@ header h1 {
     justify-content: center;
 }
 
-/* Профиль и социальные иконки */
 .profile-section {
     position: relative;
     display: flex;
@@ -169,7 +169,6 @@ header h1 {
     color: white;
 }
 
-/* Прозрачность и масштаб карточек */
 .carousel-inner .project-card {
     opacity: 0.4;
     transform: scale(0.8);
@@ -180,13 +179,36 @@ header h1 {
     transform: scale(1);
 }
 
-/* Контейнер для тегов */
+/* Контейнер для тегов и кнопки документов */
 .tags-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 10px;
     margin: 20px auto;
+    align-items: center;
+    justify-content: flex-start; /* Док-кнопка слева, теги рядом */
+    max-width: 600px;
+}
+
+/* Кнопка для документов */
+.doc-button {
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.doc-button:hover {
+    background: rgba(255,255,255,0.2);
+}
+.doc-button img {
+    width: 24px;
+    height: 24px;
 }
 
 /* Стили для тегов */
@@ -205,7 +227,6 @@ header h1 {
     background-color: rgba(255, 255, 255, 0.4);
 }
 
-/* Стили для кнопки "Сбросить" */
 .reset-button {
     background-color: rgba(255, 0, 0, 0.6);
 }
@@ -219,7 +240,6 @@ header h1 {
     background-color: rgba(255, 0, 0, 0.8);
 }
 
-/* Сообщение об отсутствии проектов */
 .no-projects-message {
     color: white;
     font-size: 1.5em;
@@ -227,7 +247,66 @@ header h1 {
     margin: auto;
 }
 
-/* Адаптивность для мобильных устройств */
+/* Всплывающее окно */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; 
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.popup-content {
+    background: rgba(0,0,0,0.8);
+    width: 80%;
+    max-width: 600px;
+    max-height: 80%;
+    overflow: hidden;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabs {
+    display: flex;
+    background: rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.tab-button {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.tab-button:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.tab-button.active {
+    background: rgba(255,255,255,0.3);
+}
+
+.tab-content {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+    line-height: 1.5;
+}
+
+/* Адаптивность */
 @media (max-width: 768px) {
     .profile-container {
         max-width: 300px;
