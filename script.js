@@ -51,10 +51,6 @@ function getUniqueTagsFromProjects(projects) {
 
 function displayTags() {
     const tagsContainer = document.querySelector('.tags-container');
-    // На данный момент docButton уже в HTML до тегов
-    // Просто добавим теги после docButton
-
-    // Удаляем все, кроме docButton, если есть
     const existingButtons = tagsContainer.querySelectorAll('.tag-button, .reset-button');
     existingButtons.forEach(btn => btn.remove());
 
@@ -62,6 +58,12 @@ function displayTags() {
         const button = document.createElement('button');
         button.className = 'tag-button';
         button.textContent = tag;
+        
+        // Если это тег "Best", делаем фон золотым
+        if (tag.toLowerCase() === 'best') {
+            button.classList.add('best-tag');
+        }
+
         if (selectedTags.includes(tag)) {
             button.classList.add('active');
         }
@@ -132,7 +134,7 @@ function displayProjects() {
     if (filteredProjects.length === 0) {
         const message = document.createElement('div');
         message.className = 'no-projects-message';
-        message.textContent = '¯\\_(ツ)_/¯';
+        message.textContent = '\n\n¯\\_(ツ)_/¯';
         carouselInner.appendChild(message);
         return;
     }
@@ -148,6 +150,12 @@ function displayProjects() {
         const name = document.createElement('div');
         name.className = 'project-name';
         name.textContent = project.name;
+
+        // Если имя проекта "Best" - делаем золотым
+        if (project.name.toLowerCase() === 'best') {
+            name.classList.add('best');
+        }
+
         name.addEventListener('click', (e) => {
             e.stopPropagation();
             window.open(project.link, '_blank');
@@ -377,10 +385,15 @@ const docButton = document.getElementById('docButton');
 const popup = document.getElementById('popup');
 const tabsContainer = document.getElementById('tabs');
 const tabContent = document.getElementById('tabContent');
+const popupClose = document.getElementById('popupClose');
 
 docButton.addEventListener('click', () => {
     popup.style.display = 'flex';
     loadPapers();
+});
+
+popupClose.addEventListener('click', () => {
+    closePopup();
 });
 
 window.addEventListener('click', (e) => {
@@ -457,11 +470,30 @@ function selectTab(index, papersData) {
 
 function renderMarkdown(md) {
     let html = md
+        // Блочные кодовые блоки (```...```)
+        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+
+        // Инлайн код (`...`)
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+
+        // Заголовки
         .replace(/^# (.*$)/gim, '<h1>$1</h1>')
         .replace(/^## (.*$)/gim, '<h2>$1</h2>')
         .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+
+        // Горизонтальная линия (--- на отдельной строке)
+        .replace(/^---$/gim, '<hr>')
+
+        // Жирный текст
         .replace(/\*\*(.*?)\*\*/gim, '<b>$1</b>')
+
+        // Курсив
         .replace(/\*(.*?)\*/gim, '<i>$1</i>')
+
+        // Ссылки [текст](ссылка)
+        .replace(/\[([^\]]+)\]\(([^\)]+)\)/gim, '<a href="$2" target="_blank">$1</a>')
+
+        // Переносы строк
         .replace(/\n/gim, '<br>');
 
     return html.trim();

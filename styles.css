@@ -112,6 +112,7 @@ header h1 {
     overflow: hidden;
     cursor: grab;
     margin-top: 20px;
+    min-height: 200px;  
 }
 
 .carousel:active {
@@ -123,6 +124,7 @@ header h1 {
     align-items: center;
     transition: transform 0.5s ease;
     will-change: transform;
+    min-height: 200px; 
 }
 
 /* Карточки проектов */
@@ -163,6 +165,11 @@ header h1 {
     transform: scale(1.05);
 }
 
+/* Золотой цвет для Best проекта (если понадобится) */
+.project-name.best {
+    color: gold !important;
+}
+
 .project-description {
     font-size: 0.9em;
     padding: 5px;
@@ -184,11 +191,17 @@ header h1 {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin: 20px auto; /* чтобы контейнер сам центрировался по горизонтали */
     align-items: center;
-    justify-content: center; /* меняем выравнивание по главной оси */
+    justify-content: center;
     max-width: 600px;
-    text-align: center; /* можно оставить, чтобы тексты кнопок были по центру */
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin: 20px auto;
+    position: sticky; /* теперь sticky */
+    top: 0;           /* "прилипает" к верху при прокрутке */
+    z-index: 1000;
 }
 
 /* Кнопка для документов */
@@ -244,10 +257,14 @@ header h1 {
 }
 
 .no-projects-message {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
     font-size: 1.5em;
     text-align: center;
-    margin: auto;
+    height: 100%;
 }
 
 /* Всплывающее окно */
@@ -276,10 +293,25 @@ header h1 {
     flex-direction: column;
 }
 
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    z-index: 10000;
+}
+
+.close-button:hover {
+    color: red;
+}
+
 .tabs {
     display: flex;
     background: rgba(255,255,255,0.1);
     border-bottom: 1px solid rgba(255,255,255,0.2);
+    margin-top: 40px;
 }
 
 .tab-button {
@@ -307,6 +339,21 @@ header h1 {
     overflow-y: auto;
     flex: 1;
     line-height: 1.5;
+}
+
+.tab-content a {
+    color: cyan; 
+    text-decoration: underline; /* по желанию */
+}
+
+/* Специальные стили для тега "Best" */
+.best-tag {
+    background-color: rgba(255, 215, 0, 0.2); /* базовое состояние - светло-золотой полупрозрачный фон */
+}
+
+.tag-button.best-tag:hover,
+.tag-button.best-tag.active {
+    background-color: rgba(255, 215, 0, 0.4);
 }
 
 /* Адаптивность */
