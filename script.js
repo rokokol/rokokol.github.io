@@ -488,7 +488,7 @@ function renderMarkdown(md) {
         .replace(/\*\*(.*?)\*\*/gim, '<b>$1</b>')
 
         // Курсив
-        .replace(/\*(.*?)\*/gim, '<i>$1</i>')
+        .replace(/__(.*?)__/gim, '<i>$1</i>')
 
         // Ссылки [текст](ссылка)
         .replace(/\[([^\]]+)\]\(([^\)]+)\)/gim, '<a href="$2" target="_blank">$1</a>')
