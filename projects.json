@@ -28,6 +28,13 @@
             "tags": ["Telegram", "AI"]
         },
         {
+            "name": "myWiki",
+            "description": "Мой онлайн-дневник с заметками и прочим",
+            "link": "https://ilyushas.online/myWiki/",
+            "image": "media/myWiki.jpg",
+            "tags": ["Best", "Other"]
+        },
+        {
             "name": "Easy Bitmap Maker",
             "description": "Сайт для создания квадратных C++ битмапов",
             "link": "http://easy-bitmap.online/",
