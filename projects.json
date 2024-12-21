@@ -35,6 +35,13 @@
             "tags": ["Other"]
         },
         {
+            "name": "myWiki",
+            "description": "Мой онлайн-дневник",
+            "link": "https://ilyushas.online/myWiki/",
+            "image": "media/myWiki.jpg",
+            "tags": ["Best", "Other"]
+        },
+        {
             "name": "RingPulse-Stationr",
             "description": "Классные настольные часы    ",
             "link": "https://github.com/rokokol/RingPulse-Station",
