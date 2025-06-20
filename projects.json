@@ -32,7 +32,14 @@
             "description": "Мой онлайн-дневник с заметками и прочим",
             "link": "https://ilyushas.online/myWiki/",
             "image": "media/myWiki.jpg",
-            "tags": ["Best", "Other"]
+            "tags": ["Other"]
+        },
+        {
+            "name": "LampCraft",
+            "description": "Ламповый клон Minecraft, написанный на OpenGL",
+            "link": "https://github.com/rokokol/lampcraft",
+            "image": "media/lampcraft.png",
+            "tags": ["C++"]
         },
         {
             "name": "Easy Bitmap Maker",
