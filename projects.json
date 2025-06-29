@@ -21,13 +21,6 @@
             "tags": ["Bot", "Telegram"]
         },
         {
-            "name": "A Misty Gallery",
-            "description": "Моя фотогаллерея, на которой планируется обучить генеративный ИИ",
-            "link": "https://t.me/amistygallery",
-            "image": "media/misty-gallery.jpg",
-            "tags": ["Telegram", "AI"]
-        },
-        {
             "name": "myWiki",
             "description": "Мой онлайн-дневник с заметками и прочим",
             "link": "https://ilyushas.online/myWiki/",
