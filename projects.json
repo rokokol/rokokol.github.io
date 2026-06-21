@@ -7,6 +7,13 @@
             "tags": ["Best", "Telegram"]
         },
         {
+            "name": "a misty gallery",
+            "description": "Моя фотогаллерея, на которой планирую дообучать модели",
+            "link": "https://t.me/amistygallery",
+            "image": "media/misty-gallery.webp",
+            "tags": ["Telegram"]
+        },
+        {
             "name": "huix",
             "description": "Мой конфиг для NixOS и всякие скрипты-утилиты",
             "link": "https://github.com/rokokol/huix",
