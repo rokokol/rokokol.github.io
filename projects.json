@@ -8,7 +8,7 @@
         },
         {
             "name": "huix",
-            "description": "Мой конфиг для NixOS",
+            "description": "Мой конфиг для NixOS и всякие скрипты-утилиты",
             "link": "https://github.com/rokokol/huix",
             "image": "media/huix.webp",
             "tags": ["Best", "Other"]
