@@ -43,18 +43,18 @@
             "tags": ["Other"]
         },
         {
-            "name": "LampCraft",
-            "description": "Ламповый клон Minecraft, написанный на OpenGL",
-            "link": "https://github.com/rokokol/lampcraft",
-            "image": "media/lampcraft.webp",
-            "tags": ["C++"]
-        },
-        {
             "name": "Кейкапы Брайля",
             "description": "Светящиеся кейкапы со шрифтом Брайля для моей сплит-клавиатуры",
             "link": "https://makerworld.com/en/models/2139220-braille-keycaps#profileId-2317229",
             "image": "media/braille-keycaps.webp",
             "tags": ["Best", "3D"]
+        },
+        {
+            "name": "LampCraft",
+            "description": "Ламповый клон Minecraft, написанный на OpenGL",
+            "link": "https://github.com/rokokol/lampcraft",
+            "image": "media/lampcraft.webp",
+            "tags": ["C++"]
         },
         {
             "name": "F-Triangle Keychain",
