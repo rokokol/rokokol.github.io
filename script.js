@@ -143,6 +143,7 @@ function displayProjects() {
         const card = document.createElement('div');
         card.className = 'project-card';
         card.style.backgroundImage = `url(${project.image})`;
+        applyAccentColor(card, project.image);
 
         const info = document.createElement('div');
         info.className = 'project-info';
@@ -179,6 +180,62 @@ function displayProjects() {
     });
 }
 
+// Достаём из картинки проекта самый «живой» цвет и кладём его в CSS-переменную
+// --accent-rgb, чтобы подсветка карточки совпадала с её изображением
+function applyAccentColor(card, imageUrl) {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+        try {
+            const canvas = document.createElement('canvas');
+            const size = canvas.width = canvas.height = 16;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, size, size);
+            const { data } = ctx.getImageData(0, 0, size, size);
+
+            let best = null;
+            let bestScore = -1;
+            let sumR = 0, sumG = 0, sumB = 0, count = 0;
+
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
+                if (a < 125) continue;
+                const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+                if (lum < 25 || lum > 235) continue; // пропускаем почти чёрное/белое
+
+                sumR += r; sumG += g; sumB += b; count++;
+
+                const saturation = Math.max(r, g, b) - Math.min(r, g, b);
+                if (saturation > bestScore) {
+                    bestScore = saturation;
+                    best = [r, g, b];
+                }
+            }
+
+            let color;
+            if (best && bestScore > 20) color = best;          // выраженный цвет на картинке
+            else if (count) color = [sumR / count, sumG / count, sumB / count]; // иначе среднее
+            else return;                                        // совсем тёмная/пустая — оставляем дефолт
+
+            color = makeVibrant(color);
+            card.style.setProperty('--accent-rgb', color.map(Math.round).join(', '));
+        } catch (e) {
+            // тейнтнутый/непрочитанный canvas — просто оставляем дефолтный акцент
+        }
+    };
+    img.src = imageUrl;
+}
+
+// Поднимаем яркость, чтобы цвет читался как акцент на тёмном фоне
+function makeVibrant([r, g, b]) {
+    const max = Math.max(r, g, b);
+    if (max < 140) {
+        const factor = 140 / Math.max(max, 1);
+        r *= factor; g *= factor; b *= factor;
+    }
+    return [Math.min(255, r), Math.min(255, g), Math.min(255, b)];
+}
+
 function addEventListeners() {
     const carousel = document.querySelector('.carousel');
 
@@ -192,6 +249,22 @@ function addEventListeners() {
     carousel.addEventListener('mouseup', mouseUp);
     carousel.addEventListener('mouseleave', mouseLeave);
     carousel.addEventListener('mousemove', mouseMove);
+
+    window.addEventListener('keydown', handleKeydown);
+}
+
+function handleKeydown(e) {
+    // Не листаем, пока открыто окно с документами
+    if (popup.style.display === 'flex') return;
+    if (filteredProjects.length === 0) return;
+
+    if (e.key === 'ArrowLeft') {
+        currentIndex = Math.max(currentIndex - 1, 0);
+        updateCarousel();
+    } else if (e.key === 'ArrowRight') {
+        currentIndex = Math.min(currentIndex + 1, filteredProjects.length - 1);
+        updateCarousel();
+    }
 }
 
 function updateCarousel() {
@@ -211,6 +284,7 @@ function updateCarousel() {
     cards.forEach((card, index) => {
         const distance = Math.abs(index - currentIndex);
         const maxDistance = 2;
+        card.classList.toggle('centered', distance === 0);
         if (distance > maxDistance) {
             card.style.opacity = 0;
             card.style.transform = 'scale(0.6)';
@@ -476,10 +550,10 @@ function renderMarkdown(md) {
         // Инлайн код (`...`)
         .replace(/`([^`]+)`/g, '<code>$1</code>')
 
-        // Заголовки
-        .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+        // Заголовки (от частного к общему, чтобы ## и ### не съедались правилом #)
         .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+        .replace(/^# (.*$)/gim, '<h1>$1</h1>')
 
         // Горизонтальная линия (--- на отдельной строке)
         .replace(/^---$/gim, '<hr>')
@@ -495,6 +569,13 @@ function renderMarkdown(md) {
 
         // Переносы строк
         .replace(/\n/gim, '<br>');
+
+    // Убираем лишние переносы вокруг блочных элементов — иначе пустые
+    // строки markdown превращаются в зияющие пробелы между заголовками
+    html = html
+        .replace(/(<br>\s*){2,}/g, '<br><br>')                       // максимум одна пустая строка
+        .replace(/(<br>\s*)+(<(?:h1|h2|h3|hr|pre))/g, '$2')          // нет переносов перед блоком
+        .replace(/(<\/(?:h1|h2|h3|pre)>|<hr>)(\s*<br>)+/g, '$1');    // и сразу после блока
 
     return html.trim();
 }
