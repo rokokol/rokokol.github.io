@@ -22,9 +22,17 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('media/background.gif') no-repeat center center fixed;
-    background-size: cover;
+    overflow: hidden;
+    background: #15151a; /* подложка, пока грузится видео */
     z-index: -1;
+}
+
+.background-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* Затемнение + лёгкая виньетка поверх фона для читаемости */
@@ -208,7 +216,19 @@ header h1 {
     transition: opacity 0.3s, transform 0.3s, box-shadow 0.3s, border-color 0.3s;
 }
 
+/* Видео-обложка карточки (поверх фонового постера, под подписью) */
+.project-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
 .project-info {
+    position: relative;
+    z-index: 1;
     width: 100%;
     text-align: center;
     padding: 14px 10px 12px;

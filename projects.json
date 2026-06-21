@@ -3,84 +3,85 @@
             "name": "Would-be Scinetific Storeroom",
             "description": "Мой блог в Telegram",
             "link": "https://t.me/rokokoschannel",
-            "image": "media/would-be-scientific-storeroom.jpg",
+            "image": "media/would-be-scientific-storeroom.webp",
             "tags": ["Best", "Telegram"]
         },
         {
             "name": "huix",
             "description": "Мой конфиг для NixOS",
             "link": "https://github.com/rokokol/huix",
-            "image": "media/huix.png",
+            "image": "media/huix.webp",
             "tags": ["Best", "Other"]
         },
         {
             "name": "На грани смысла",
             "description": "Канал с забавными находками из интернета",
             "link": "https://t.me/edge_of_sense",
-            "image": "media/edgesense.gif",
+            "image": "media/edgesense.webp",
+            "video": ["media/edgesense.webm", "media/edgesense.mp4"],
             "tags": ["Telegram"]
         },
         {
             "name": "Dr. Матхер",
             "description": "Бот для помощи с математикой",
             "link": "https://github.com/rokokol/mather",
-            "image": "media/mather.jpg",
+            "image": "media/mather.webp",
             "tags": ["Bot", "Telegram"]
         },
         {
             "name": "myWiki",
             "description": "Мой онлайн-дневник с заметками и прочим",
             "link": "https://rokokol.art/myWiki/",
-            "image": "media/myWiki.jpg",
+            "image": "media/myWiki.webp",
             "tags": ["Other"]
         },
         {
             "name": "LampCraft",
             "description": "Ламповый клон Minecraft, написанный на OpenGL",
             "link": "https://github.com/rokokol/lampcraft",
-            "image": "media/lampcraft.png",
+            "image": "media/lampcraft.webp",
             "tags": ["C++"]
         },
         {
             "name": "Кейкапы Брайля",
             "description": "Светящиеся кейкапы со шрифтом Брайля для моей сплит-клавиатуры",
             "link": "https://makerworld.com/en/models/2139220-braille-keycaps#profileId-2317229",
-            "image": "media/braille-keycaps.png",
+            "image": "media/braille-keycaps.webp",
             "tags": ["Best", "3D"]
         },
         {
             "name": "F-Triangle Keychain",
             "description": "Брелок с моим маскотом — ебучим треугольником",
             "link": "https://makerworld.com/en/models/2506279-f-triangle-keychain#profileId-2755624",
-            "image": "media/f-triangle.png",
+            "image": "media/f-triangle.webp",
             "tags": ["3D"]
         },
         {
             "name": "Easy Bitmap Maker",
             "description": "Сайт для создания квадратных C++ битмапов",
             "link": "http://easy-bitmap.online/",
-            "image": "media/easy-bitmap.png",
+            "image": "media/easy-bitmap.webp",
             "tags": ["Other"]
         },
         {
             "name": "RingPulse-Station",
             "description": "Классные настольные часы    ",
             "link": "https://github.com/rokokol/RingPulse-Station",
-            "image": "media/ring-watch.png",
+            "image": "media/ring-watch.webp",
             "tags": ["Arduino"]
         },
         {
             "name": "Shrimp Run",
             "description": "Игра про креветку в стиле Google Dino",
             "link": "https://github.com/rokokol/shrimp_run",
-            "image": "media/shrimp-run.png",
+            "image": "media/shrimp-run.webp",
             "tags": ["Arduino"]
         },
         {
             "name": "Best Way Searcher",
             "description": "Мой первый командный проект",
             "link": "https://github.com/Xtaiewzer/Best-Way-Searcher",
-            "image": "media/bws.jpg",
+            "image": "media/bws.webp",
             "tags": ["Other"]
         }
     ]

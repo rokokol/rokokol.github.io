@@ -10,7 +10,12 @@
 </head>
 <body>
     <!-- Фоновая анимация -->
-    <div class="background"></div>
+    <div class="background">
+        <video class="background-video" autoplay loop muted playsinline poster="media/background.webp">
+            <source src="media/background.webm" type="video/webm">
+            <source src="media/background.mp4" type="video/mp4">
+        </video>
+    </div>
 
     <!-- Заголовок -->
     <header>
@@ -26,7 +31,7 @@
                     <img src="icons/git.ico" alt="GitHub">
                 </a>
             </div>
-            <img src="media/me.png" alt="Профиль" class="profile-picture">
+            <img src="media/me.webp" alt="Профиль" class="profile-picture">
             <div class="social-icon right">
                 <a href="https://www.youtube.com/@ilyushechka" target="_blank">
                     <img src="icons/youtube.ico" alt="YouTube">
