@@ -7,6 +7,13 @@
             "tags": ["Best", "Telegram"]
         },
         {
+            "name": "huix",
+            "description": "Мой конфиг для NixOS",
+            "link": "https://github.com/rokokol/huix",
+            "image": "media/huix.png",
+            "tags": ["Best", "Other"]
+        },
+        {
             "name": "На грани смысла",
             "description": "Канал с забавными находками из интернета",
             "link": "https://t.me/edge_of_sense",
@@ -16,14 +23,14 @@
         {
             "name": "Dr. Матхер",
             "description": "Бот для помощи с математикой",
-            "link": "https://t.me/mathersolver_bot",
+            "link": "https://github.com/rokokol/mather",
             "image": "media/mather.jpg",
             "tags": ["Bot", "Telegram"]
         },
         {
             "name": "myWiki",
             "description": "Мой онлайн-дневник с заметками и прочим",
-            "link": "https://ilyushas.online/myWiki/",
+            "link": "https://rokokol.art/myWiki/",
             "image": "media/myWiki.jpg",
             "tags": ["Other"]
         },
@@ -35,6 +42,20 @@
             "tags": ["C++"]
         },
         {
+            "name": "Кейкапы Брайля",
+            "description": "Светящиеся кейкапы со шрифтом Брайля для моей сплит-клавиатуры",
+            "link": "https://makerworld.com/en/models/2139220-braille-keycaps#profileId-2317229",
+            "image": "media/braille-keycaps.png",
+            "tags": ["Best", "3D"]
+        },
+        {
+            "name": "F-Triangle Keychain",
+            "description": "Брелок с моим маскотом — ебучим треугольником",
+            "link": "https://makerworld.com/en/models/2506279-f-triangle-keychain#profileId-2755624",
+            "image": "media/f-triangle.png",
+            "tags": ["3D"]
+        },
+        {
             "name": "Easy Bitmap Maker",
             "description": "Сайт для создания квадратных C++ битмапов",
             "link": "http://easy-bitmap.online/",
@@ -42,7 +63,7 @@
             "tags": ["Other"]
         },
         {
-            "name": "RingPulse-Stationr",
+            "name": "RingPulse-Station",
             "description": "Классные настольные часы    ",
             "link": "https://github.com/rokokol/RingPulse-Station",
             "image": "media/ring-watch.png",
@@ -63,4 +84,3 @@
             "tags": ["Other"]
         }
     ]
-
