@@ -142,8 +142,29 @@ function displayProjects() {
     filteredProjects.forEach((project, index) => {
         const card = document.createElement('div');
         card.className = 'project-card';
+        // Постер-картинка лежит фоном — она же первый кадр, пока грузится видео,
+        // и источник акцентного цвета
         card.style.backgroundImage = `url(${project.image})`;
         applyAccentColor(card, project.image);
+
+        // Если у проекта есть видео — кладём зацикленный <video> поверх фона
+        if (Array.isArray(project.video) && project.video.length) {
+            const video = document.createElement('video');
+            video.className = 'project-video';
+            video.autoplay = true;
+            video.loop = true;
+            video.muted = true;
+            video.playsInline = true;
+            video.setAttribute('playsinline', '');
+            video.poster = project.image;
+            project.video.forEach(src => {
+                const source = document.createElement('source');
+                source.src = src;
+                source.type = src.endsWith('.webm') ? 'video/webm' : 'video/mp4';
+                video.appendChild(source);
+            });
+            card.appendChild(video);
+        }
 
         const info = document.createElement('div');
         info.className = 'project-info';
