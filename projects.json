@@ -65,8 +65,8 @@
         },
         {
             "name": "Easy Bitmap Maker",
-            "description": "Сайт для создания квадратных C++ битмапов",
-            "link": "http://easy-bitmap.online/",
+            "description": "Редактор 1-битных картинок с экспортом в C-массивы под библиотеки Arduino: OLED, светодиодные матрицы, символы LCD",
+            "link": "https://bitmap.rokokol.art/",
             "image": "media/easy-bitmap.webp",
             "tags": ["Other"]
         },
